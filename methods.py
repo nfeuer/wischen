@@ -17,6 +17,9 @@ def get_hotel_response(responses, picks, hotel_data, rankings, models, hotelnorm
     rankings = update_ranking(responses["id"], responses["accrej"], models, hotelnorm, rankings)
     rankings, hotel_data, hotelnorm, picks = (list(t) for t in
                                               zip(*sorted(zip(rankings, hotel_data, hotelnorm, picks), reverse=True)))
-    print(picks)
+    picks.pop(0)
+    hotel_data.pop(0)
+    rankings.pop(0)
+    hotelnorm.pop(0)
     return picks, hotel_data, rankings, hotelnorm
 
