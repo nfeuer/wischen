@@ -45,25 +45,25 @@ def insertknearestneighbor(data):
     return model
 
 def update_ranking(id, acc_or_rej, model, hotel_data, rankings):
+    const = 0.7
     results = model.kneighbors(np.asarray(hotel_data[id]).reshape(1, -1), n_neighbors=5, return_distance=True)
     distances = results[0].tolist()[0]
     indices = results[1].tolist()[0]
     for i in range(0, len(indices)):
         if acc_or_rej:
-            try:
-                if distances[i] > 1:
-                    rankings[indices[i]]+= 0.9/distances[i]
-                else:
-                    rankings[indices[i]] += 0.9 * distances[i]
-            except (ZeroDivisionError):
+            if distances[i] >= 1:
+                rankings[indices[i]]+= const/distances[i]
+            elif distances[i] == 0:
                 rankings[indices[i]] += 1
+            else:
+                rankings[indices[i]] += const * distances[i]
         else:
-            try:
-                if distances[i] > 1:
-                    rankings[indices[i]] -= 0.9/distances[i]
-                else:
-                    rankings[indices[i]] -= 0.9 * distances[i]
-            except (ZeroDivisionError):
+            if distances[i] >= 1:
+                rankings[indices[i]] -= const/distances[i]
+            elif distances[i] == 0:
                 rankings[indices[i]] = 0
+            else:
+                rankings[indices[i]] -= const * distances[i]
+
     return rankings
 

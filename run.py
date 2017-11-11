@@ -11,16 +11,17 @@ app.register_blueprint(ml, url_prefix='/ml')
 app.register_blueprint(methods, url_prefix='/methods')
 
 class HelloWorld(Resource):
+    def __init__(self):
+        self.picked, self.hotels, self.ranking = generate_data()
+        self.normal_hotels = normalization(self.hotels)
+        self.model = insertknearestneighbor(self.normal_hotels)
     def get(self):
-        return {'hello': 'world'}
+        return self.normal_hotels
     def post(self):
         pass
 api.add_resource(HelloWorld, '/')
 
 
 if __name__ == '__main__':
-    picked, hotels, ranking = generate_data()
-    normal_hotels = normalization(hotels)
-    model = insertknearestneighbor(normal_hotels)
     port = int(os.environ.get("PORT", 5000))
     app.run(host='0.0.0.0', port=port)
