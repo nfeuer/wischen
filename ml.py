@@ -40,7 +40,7 @@ def normalization(hotel_data):
     return normhotels
 
 def insertknearestneighbor(data):
-    model = knn.NearestNeighbors(1, n_jobs=2)
+    model = knn.NearestNeighbors(1)#, n_jobs=2)
     model.fit(data)
     return model
 

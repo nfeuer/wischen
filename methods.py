@@ -6,22 +6,21 @@ methods = Blueprint('methods', __name__)
 
 app = Flask(__name__)
 
-def get_hotel_response(picks, hotel_data, rankings):
+def get_hotel_response(picks, hotel_data, rankings, models, hotelnorm):
     dictio = json.dumps({"id":5,"accrej":0})
     dictio = json.loads(dictio)
 #    feedback = request.get_json()
     if dictio["accrej"] == 1: picks[dictio["id"]] = True
     if dictio["accrej"] == 0:
-        print(picks[dictio["id"]])
-        print(rankings[dictio["id"]])
         picks[dictio["id"]] = False
         rankings[dictio["id"]] = 0
-        print(picks[dictio["id"]])
-        print(rankings[dictio["id"]])
+    print(hotelnorm[dictio["id"]])
+    print(update_ranking(dictio["id"], dictio["accrej"], models, hotelnorm[dictio["id"]], rankings))
 
 
 
 picked, hotels, ranking = generate_data()
 normal_hotels = normalization(hotels)
-model = insertknearestneighbor(hotels)
-get_hotel_response(picked, hotels, ranking)
+print(normal_hotels[0])
+model = insertknearestneighbor(normal_hotels)
+get_hotel_response(picked, hotels, ranking, model, normal_hotels)
