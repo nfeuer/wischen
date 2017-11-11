@@ -2,7 +2,7 @@ import os
 import json
 from ml import ml, generate_data, normalization, insertknearestneighbor
 from methods import methods, get_hotel_response
-from flask_restful import Resource, Api
+from flask_restful import Resource, Api, reqparse
 from flask import Flask, render_template
 
 app = Flask(__name__)
@@ -21,6 +21,8 @@ class HotelList(Resource):
         return self.hotels
 
     def post(self):
+        parser = reqparse.RequestParser()
+        print(parser.parse_args())
         dictio = json.dumps({"id": 1, "accrej": 1})
         dictio = json.loads(dictio)
         self.picked, self.hotels, self.ranking, self.normal_hotels = get_hotel_response(dictio, self.picked,
