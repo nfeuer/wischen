@@ -25,8 +25,8 @@ class HotelList(Resource):
         global normal_hotels
         with app.app_context():
             parser = reqparse.RequestParser()
-            res = parser.parse_args()
-            print(res)
+            id = parser.parse_args("id")
+            print(id)
             picked, hotels, ranking, normal_hotels = get_hotel_response(res, picked, hotels, ranking, model, normal_hotels)
         return hotels[0:2]
 
