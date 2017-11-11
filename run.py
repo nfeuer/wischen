@@ -1,37 +1,34 @@
 from flask import Flask, request
-from flask_restful import Resource, Api
+#from flask_restful import Resource, Api
 import os
+from flask import jsonify
 import json
 from ml import ml, generate_data, normalization, insertknearestneighbor
 from methods import methods, get_hotel_response
 
-app = Flask(__name__)
-api = Api(app)
+app = Flask(__name__)  # create the application instance :)
+app.config.from_object(__name__)  # load config from this file , flaskr.py
 
 picked, hotels, ranking = generate_data()
 normal_hotels = normalization(hotels)
 model = insertknearestneighbor(normal_hotels)
 
-class HelloWorld(Resource):
-    def get(self):
-        return hotels
-    def post(self):
-        global picked
-        global hotels
-        global ranking
-        global model
-        global normal_hotels
-        with app.app_context():
-            request_json = request.get_json()
-            value1 = request_json.get('id')
-            print(value1)
-            id = request.json["id"]
-            print(id)
-            picked, hotels, ranking, normal_hotels = get_hotel_response(id, picked, hotels, ranking, model, normal_hotels)
-        return hotels[0:2]
+@app.route(r'/')
+def allhotels():
+    return jsonify(hotels)
+@app.route(r'/posting', methods=['GET'])
+def specifichotels():
+    global picked
+    global hotels
+    global ranking
+    global model
+    global normal_hotels
+    with app.app_context():
+        fromserver = {"id": int(request.args.get("id")), "accrej": int(request.args.get("accrej"))  }
+        print(fromserver)
+        picked, hotels, ranking, normal_hotels = get_hotel_response(fromserver, picked, hotels, ranking, model, normal_hotels)
+    return jsonify(hotels[0:2])
 
-
-api.add_resource(HelloWorld, '/')
 
 if __name__ == '__main__':
     app.run(debug=True)
