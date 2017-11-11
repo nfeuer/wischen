@@ -21,4 +21,4 @@ if __name__ == '__main__':
     picked, hotels, ranking = generate_data()
     normal_hotels = normalization(hotels)
     model = insertknearestneighbor(hotels)
-    app.run()
+    app.run(host='0.0.0.0', port=8080)
