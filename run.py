@@ -1,16 +1,24 @@
-from flask import Flask
+from ml import ml, generate_data, normalization, insertknearestneighbor
+from methods import methods
+from flask_restful import Resource, Api
+from flask import Flask, render_template
 
-from api import api
-from ml import ml
 
 app = Flask(__name__)
+api = Api(app)
 app.register_blueprint(ml, url_prefix='/ml')
-app.register_blueprint(api, url_prefix='/api')
+app.register_blueprint(methods, url_prefix='/methods')
 
-@app.route('/')
-def hello_world():
-    return 'Hello World!'
+class HelloWorld(Resource):
+    def get(self):
+        return {'hello': 'world'}
+    def post(self):
+
+api.add_resource(HelloWorld, '/')
 
 
 if __name__ == '__main__':
+    picked, hotels, ranking = generate_data()
+    normal_hotels = normalization(hotels)
+    model = insertknearestneighbor(hotels)
     app.run()

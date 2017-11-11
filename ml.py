@@ -20,22 +20,22 @@ def generate_data():
         data.append(features)
     return picked, data, ranking
 
-def normalization():
+def normalization(hotel_data):
     minmaxs = []
     normhotels = []
-    for i in range(0, len(hotels[0])):
-        min = hotels[0][i]
-        max = hotels[0][i]
-        for hotel in range(0, len(hotels)):
-            if hotels[hotel][i] > max:
-                max = hotels[hotel][i]
-            if hotels[hotel][i] < min:
-                min = hotels[hotel][i]
+    for i in range(0, len(hotel_data[0])):
+        min = hotel_data[0][i]
+        max = hotel_data[0][i]
+        for hotel in range(0, len(hotel_data)):
+            if hotel_data[hotel][i] > max:
+                max = hotel_data[hotel][i]
+            if hotel_data[hotel][i] < min:
+                min = hotel_data[hotel][i]
         minmaxs.append((min, max-min))
-    for i in range(0, len(hotels)):
+    for i in range(0, len(hotel_data)):
         hotelnormfeatures = []
-        for k in range(0, len(hotels[i])):
-            hotelnormfeatures.append((hotels[i][k] - minmaxs[k][0])/(minmaxs[k][1]))
+        for k in range(0, len(hotel_data[i])):
+            hotelnormfeatures.append((hotel_data[i][k] - minmaxs[k][0])/(minmaxs[k][1]))
         normhotels.append(hotelnormfeatures)
     return normhotels
 
@@ -44,14 +44,14 @@ def insertknearestneighbor(data):
     model.fit(data)
     return model
 
-def update_ranking(id, acc_or_rej, model):
-    results = model.kneighbors(np.asarray(hotels[id]).reshape(1, -1), n_neighbors=5, return_distance=True)
-    print(results[0].tolist())
-    for i in range(0, len(results[1])):
-        print(results[1][0][i])
-
-
-picked, hotels, ranking = generate_data()
-normal_hotels = normalization()
-model = insertknearestneighbor(hotels)
-update_ranking(5, True, model)
+def update_ranking(id, acc_or_rej, model, hotel_data, rankings):
+    results = model.kneighbors(np.asarray(hotel_data[id]).reshape(1, -1), n_neighbors=5, return_distance=True)
+    distances = results[0].tolist()[0]
+    indices = results[1].tolist()[0]
+    for i in range(0, len(indices)):
+        try:
+            rankings[indices[i]]-= 0.9/distances[i]
+            print(rankings[indices[i]])
+        except (ZeroDivisionError):
+            rankings[indices[i]] = 0
+            print(rankings[indices[i]])
