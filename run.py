@@ -18,8 +18,12 @@ class HotelList(Resource):
     def get(self):
         return hotels
     def post(self):
+        global picked
+        global hotels
+        global ranking
+        global model
+        global normal_hotels
         with app.app_context():
-            global picked, hotels, ranking, model, normal_hotels
             parser = reqparse.RequestParser()
             parser.parse_args()
             dictio = json.dumps({"id": 1, "accrej": 1})
