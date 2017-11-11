@@ -24,7 +24,7 @@ class HotelList(Resource):
         global model
         global normal_hotels
         with app.app_context():
-            id = request.json
+            id = request.json["id"]
             print(id)
             picked, hotels, ranking, normal_hotels = get_hotel_response(id, picked, hotels, ranking, model, normal_hotels)
         return hotels[0:2]
