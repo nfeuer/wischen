@@ -15,7 +15,7 @@ model = insertknearestneighbor(normal_hotels)
 
 @app.route(r'/')
 def allhotels():
-    return jsonify(hotels)
+    return jsonify(hotels[0:50])
 @app.route(r'/posting', methods=['GET'])
 def specifichotels():
     global picked
