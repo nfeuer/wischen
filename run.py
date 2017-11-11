@@ -26,10 +26,9 @@ class HotelList(Resource):
         with app.app_context():
             parser = reqparse.RequestParser()
             parser.parse_args()
-            dictio = json.dumps({"id": 1, "accrej": 1})
-            dictio = json.loads(dictio)
+            dictio = json.loads(parser)
             picked, hotels, ranking, normal_hotels = get_hotel_response(dictio, picked, hotels, ranking, model, normal_hotels)
-        hotels_to_send = hotels[0:2]
+        return hotels[0:2]
 
 
 api.add_resource(HotelList, '/')
