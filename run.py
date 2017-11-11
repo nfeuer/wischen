@@ -31,7 +31,7 @@ class HotelList(Resource):
                                                                                                     self.ranking,
                                                                                                     self.model,
                                                                                                     self.normal_hotels)
-        return self.hotels[0:2]
+        hotels_to_send = self.hotels[0:2]
 
 
 api.add_resource(HotelList, '/')

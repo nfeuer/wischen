@@ -13,7 +13,7 @@ def generate_data():
     data = []
     picked = []
     ranking = [1 for i in range(0, 1000)]
-    topick = [None, True, False]
+    topick = [None]
     for i in range(0, 1000):
         picked.append(random.choice(topick))
         features = [random.randrange(1, 1001), random.randrange(0, 101), random.randrange(0, 2),
