@@ -25,9 +25,10 @@ class HotelList(Resource):
         global normal_hotels
         with app.app_context():
             parser = reqparse.RequestParser()
-            parser.parse_args()
-            dictio = json.loads(parser)
-            picked, hotels, ranking, normal_hotels = get_hotel_response(dictio, picked, hotels, ranking, model, normal_hotels)
+            jsonfile = parser.parse_args()
+            res = json.loads(jsonfile)
+            print(hotel[res["id"]])
+            picked, hotels, ranking, normal_hotels = get_hotel_response(res, picked, hotels, ranking, model, normal_hotels)
         return hotels[0:2]
 
 
