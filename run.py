@@ -3,7 +3,7 @@ import json
 from ml import ml, generate_data, normalization, insertknearestneighbor
 from methods import methods, get_hotel_response
 from flask_restful import Resource, Api, reqparse
-from flask import Flask, render_template
+from flask import Flask, render_template, request
 
 app = Flask(__name__)
 api = Api(app)
@@ -24,8 +24,7 @@ class HotelList(Resource):
         global model
         global normal_hotels
         with app.app_context():
-            parser = reqparse.RequestParser()
-            id = parser.parse_args("id")
+            id = request.json
             print(id)
             picked, hotels, ranking, normal_hotels = get_hotel_response(id, picked, hotels, ranking, model, normal_hotels)
         return hotels[0:2]
