@@ -1,5 +1,5 @@
 import json
-from ml import generate_data
+from ml import generate_data, normalization, insertknearestneighbor, update_ranking
 from flask import Flask, request, Blueprint
 
 methods = Blueprint('methods', __name__)
@@ -19,5 +19,9 @@ def get_hotel_response(picks, hotel_data, rankings):
         print(picks[dictio["id"]])
         print(rankings[dictio["id"]])
 
-picks, hotel, rankings = generate_data()
-get_hotel_response(picks, hotel, rankings)
+
+
+picked, hotels, ranking = generate_data()
+normal_hotels = normalization(hotels)
+model = insertknearestneighbor(hotels)
+get_hotel_response(picked, hotels, ranking)
