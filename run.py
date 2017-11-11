@@ -1,3 +1,4 @@
+import os
 from ml import ml, generate_data, normalization, insertknearestneighbor
 from methods import methods
 from flask_restful import Resource, Api
