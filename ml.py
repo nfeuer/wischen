@@ -68,5 +68,4 @@ def update_ranking(id, acc_or_rej, model, hotel_data, rankings):
                 rankings[indices[i]] = 0
             else:
                 rankings[indices[i]] -= const * distances[i]
-
     return rankings
