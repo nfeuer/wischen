@@ -21,7 +21,7 @@ class HotelList(Resource):
         return self.hotels
 
     def post(self):
-        with app.app_context():
+        with app.app_context(self):
             parser = reqparse.RequestParser()
             print(parser.parse_args())
             dictio = json.dumps({"id": 1, "accrej": 1})
