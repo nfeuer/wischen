@@ -21,15 +21,16 @@ class HotelList(Resource):
         return self.hotels
 
     def post(self):
-        parser = reqparse.RequestParser()
-        print(parser.parse_args())
-        dictio = json.dumps({"id": 1, "accrej": 1})
-        dictio = json.loads(dictio)
-        self.picked, self.hotels, self.ranking, self.normal_hotels = get_hotel_response(dictio, self.picked,
-                                                                                                self.hotels,
-                                                                                                self.ranking,
-                                                                                                self.model,
-                                                                                                self.normal_hotels)
+        with app.app_context():
+            parser = reqparse.RequestParser()
+            print(parser.parse_args())
+            dictio = json.dumps({"id": 1, "accrej": 1})
+            dictio = json.loads(dictio)
+            self.picked, self.hotels, self.ranking, self.normal_hotels = get_hotel_response(dictio, self.picked,
+                                                                                                    self.hotels,
+                                                                                                    self.ranking,
+                                                                                                    self.model,
+                                                                                                    self.normal_hotels)
         return self.hotels[0:100]
 
 
