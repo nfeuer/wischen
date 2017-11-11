@@ -27,7 +27,7 @@ class HotelList(Resource):
             parser = reqparse.RequestParser()
             id = parser.parse_args("id")
             print(id)
-            picked, hotels, ranking, normal_hotels = get_hotel_response(res, picked, hotels, ranking, model, normal_hotels)
+            picked, hotels, ranking, normal_hotels = get_hotel_response(id, picked, hotels, ranking, model, normal_hotels)
         return hotels[0:2]
 
 
