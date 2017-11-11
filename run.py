@@ -13,7 +13,7 @@ class HelloWorld(Resource):
     def get(self):
         return {'hello': 'world'}
     def post(self):
-
+        pass
 api.add_resource(HelloWorld, '/')
 
 
