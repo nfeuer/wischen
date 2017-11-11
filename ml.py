@@ -49,9 +49,10 @@ def update_ranking(id, acc_or_rej, model, hotel_data, rankings):
     distances = results[0].tolist()[0]
     indices = results[1].tolist()[0]
     for i in range(0, len(indices)):
-        try:
-            rankings[indices[i]]-= 0.9/distances[i]
-            print(rankings[indices[i]])
-        except (ZeroDivisionError):
-            rankings[indices[i]] = 0
-            print(rankings[indices[i]])
+        if acc_or_rej:
+            try:
+                rankings[indices[i]]+= 0.9/distances[i]
+                print(rankings[indices[i]])
+            except (ZeroDivisionError):
+                rankings[indices[i]] += 1
+                print(rankings[indices[i]])
