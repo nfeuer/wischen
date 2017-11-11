@@ -4,10 +4,10 @@ from sklearn import neighbors as knn
 from sklearn.neighbors import DistanceMetric as dm
 from flask import Flask, request, redirect, url_for, render_template, Blueprint
 
-
 ml = Blueprint('ml', __name__)
 
 app = Flask(__name__)
+
 
 def generate_data():
     data = []
@@ -16,9 +16,11 @@ def generate_data():
     topick = [None, True, False]
     for i in range(0, 1000):
         picked.append(random.choice(topick))
-        features = [random.randrange(1, 1001), random.randrange(0, 101), random.randrange(0, 2), random.randrange(0, 101)/100, random.randrange(1, 11), random.randrange(0, 2)]
+        features = [random.randrange(1, 1001), random.randrange(0, 101), random.randrange(0, 2),
+                    random.randrange(0, 101) / 100, random.randrange(1, 11), random.randrange(0, 2)]
         data.append(features)
     return picked, data, ranking
+
 
 def normalization(hotel_data):
     minmaxs = []
@@ -31,18 +33,20 @@ def normalization(hotel_data):
                 max = hotel_data[hotel][i]
             if hotel_data[hotel][i] < min:
                 min = hotel_data[hotel][i]
-        minmaxs.append((min, max-min))
+        minmaxs.append((min, max - min))
     for i in range(0, len(hotel_data)):
         hotelnormfeatures = []
         for k in range(0, len(hotel_data[i])):
-            hotelnormfeatures.append((hotel_data[i][k] - minmaxs[k][0])/(minmaxs[k][1]))
+            hotelnormfeatures.append((hotel_data[i][k] - minmaxs[k][0]) / (minmaxs[k][1]))
         normhotels.append(hotelnormfeatures)
     return normhotels
 
+
 def insertknearestneighbor(data):
-    model = knn.NearestNeighbors(1)#, n_jobs=2)
+    model = knn.NearestNeighbors(1)  # , n_jobs=2)
     model.fit(data)
     return model
+
 
 def update_ranking(id, acc_or_rej, model, hotel_data, rankings):
     const = 0.7
@@ -52,18 +56,17 @@ def update_ranking(id, acc_or_rej, model, hotel_data, rankings):
     for i in range(0, len(indices)):
         if acc_or_rej:
             if distances[i] >= 1:
-                rankings[indices[i]]+= const/distances[i]
+                rankings[indices[i]] += const / distances[i]
             elif distances[i] == 0:
                 rankings[indices[i]] += 1
             else:
                 rankings[indices[i]] += const * distances[i]
         else:
             if distances[i] >= 1:
-                rankings[indices[i]] -= const/distances[i]
+                rankings[indices[i]] -= const / distances[i]
             elif distances[i] == 0:
                 rankings[indices[i]] = 0
             else:
                 rankings[indices[i]] -= const * distances[i]
 
     return rankings
-
