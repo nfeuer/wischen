@@ -31,7 +31,7 @@ class HotelList(Resource):
                                                                                                     self.ranking,
                                                                                                     self.model,
                                                                                                     self.normal_hotels)
-        return self.hotels[0:100]
+        return self.hotels[0:1]
 
 
 api.add_resource(HotelList, '/')
