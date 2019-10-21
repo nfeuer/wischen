@@ -12,7 +12,7 @@ requests==2.18.4
 urllib3==1.22
 virtualenv==15.1.0
 virtualenv-clone==0.2.6
-flask==0.12.2
+flask==1.0
 flask-bootstrap==3.3.7.1
 flask-cors==3.0.2
 Flask-RESTful==0.3.6
